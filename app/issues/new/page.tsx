@@ -22,13 +22,14 @@ const NewIssuePage = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<NewIssueType>();
   const onSubmit: SubmitHandler<NewIssueType> = async (data) => {
     try {
       const response = await axios.post("/api/issues", data);
       router.push("/issues");
     } catch (error) {
+      console.log(error);
       setError("Something went wrong, please try again later");
       setTimeout(() => {
         setError("");
@@ -49,11 +50,7 @@ const NewIssuePage = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="pt-6 space-y-6">
         <TextField.Root radius="large">
-          <TextField.Input
-            placeholder="Enter Title"
-            {...(register("title"), { required: true, minLength: 3 })}
-            aria-invalid={errors.title ? "true" : "false"}
-          />
+          <TextField.Input placeholder="Enter Title" {...register("title")} />
           {errors.title?.type === "required" && (
             <ErrorMessage>{errors.title.message}</ErrorMessage>
           )}
@@ -69,7 +66,7 @@ const NewIssuePage = () => {
         {errors.description && (
           <ErrorMessage>{errors.description.message}</ErrorMessage>
         )}
-        <Button size="3" variant="soft">
+        <Button size="3" variant="soft" disabled={isSubmitting}>
           Submit New Issue
         </Button>
       </form>
