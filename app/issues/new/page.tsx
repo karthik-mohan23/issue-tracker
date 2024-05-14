@@ -9,6 +9,7 @@ import { useState } from "react";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { createIssueSchema } from "@/app/validationSchema";
 import { z } from "zod";
+import ErrorMessage from "@/app/components/ErrorMessage";
 
 type NewIssueType = z.infer<typeof createIssueSchema>;
 
@@ -50,13 +51,11 @@ const NewIssuePage = () => {
         <TextField.Root radius="large">
           <TextField.Input
             placeholder="Enter Title"
-            {...(register("title"), { required: true })}
+            {...(register("title"), { required: true, minLength: 3 })}
             aria-invalid={errors.title ? "true" : "false"}
           />
           {errors.title?.type === "required" && (
-            <Text color="red" as="p">
-              {errors.title.message}
-            </Text>
+            <ErrorMessage>{errors.title.message}</ErrorMessage>
           )}
         </TextField.Root>
         <Controller
@@ -68,9 +67,7 @@ const NewIssuePage = () => {
           )}
         />
         {errors.description && (
-          <Text color="red" as="p">
-            {errors.description.message}
-          </Text>
+          <ErrorMessage>{errors.description.message}</ErrorMessage>
         )}
         <Button size="3" variant="soft">
           Submit New Issue
