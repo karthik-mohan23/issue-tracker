@@ -1,4 +1,5 @@
 import prisma from "@/prisma/client";
+import { notFound } from "next/navigation";
 
 type IssueDetailsParam = {
   params: { id: string };
@@ -10,6 +11,10 @@ const IssueDetailsPage = async ({ params }: IssueDetailsParam) => {
       id: Number(params.id),
     },
   });
+
+  if (!issue) {
+    return notFound();
+  }
 
   return (
     <div>
