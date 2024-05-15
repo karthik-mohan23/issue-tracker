@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.variable}>
-        <Theme appearance="light" accentColor="gray">
+        <Theme appearance="light" accentColor="mint">
           <Navbar />
           <main className="max-w-screen-lg mx-auto w-[90%] py-10">
             {children}
